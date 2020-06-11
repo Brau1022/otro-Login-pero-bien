@@ -50,6 +50,8 @@ public class Register extends AppCompatActivity {
             public void onClick(View v) {
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
+                String nombre = mFullName.getText().toString().trim();
+                String phone = mPhone.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)){
                     mEmail.setError("Email is required.");
@@ -60,9 +62,18 @@ public class Register extends AppCompatActivity {
                     return;
                 }
                 if (password.length() < 6){
-                    mPassword.setError("Password must have at least 6 characters");
+                    mPassword.setError("Password must have at least 6 characters.");
                     return;
                 }
+                if (TextUtils.isEmpty(nombre)){
+                    mFullName.setError("Name is required.");
+                    return;
+                }
+                if (TextUtils.isEmpty(phone)){
+                    mPhone.setError("Phone is required.");
+                    return;
+                }
+
 
                 progressBar.setVisibility(View.VISIBLE);
 
