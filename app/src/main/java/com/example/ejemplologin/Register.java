@@ -41,13 +41,18 @@ public class Register extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
+        //if already login go to main menu or whatever you want
         if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
+            //go to any other activity
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            //to kill activity
+            finish();
         }
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //these variables are used to see if something is written in a textbox
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
                 String nombre = mFullName.getText().toString().trim();
@@ -83,7 +88,7 @@ public class Register extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class)); //pasar a un activity diferente
 
                         }else{
                             Toast.makeText(Register.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
