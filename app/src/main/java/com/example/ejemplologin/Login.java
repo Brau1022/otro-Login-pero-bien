@@ -152,6 +152,7 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(this, "Your App is connected", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
+                //Adding to Firebase database (authentication)
                 fAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
