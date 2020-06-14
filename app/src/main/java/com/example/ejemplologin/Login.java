@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.BreakIterator;
+
 public class Login extends AppCompatActivity {
 
 
@@ -38,8 +40,11 @@ public class Login extends AppCompatActivity {
         mPhone = findViewById(R.id.txt_phone);
         mRegister = findViewById(R.id.tv4_Register);
         mLogin = findViewById(R.id.btn_login);
+
         fAuth = FirebaseAuth.getInstance();
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar2);
+
+        progressBar.setVisibility(View.GONE);
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,21 +67,20 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                //progressBar.setVisibility(View.VISIBLE);
-
-                //authenticate user
+                progressBar.setVisibility(View.VISIBLE);
 
                 fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
                         } else {
                             Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });

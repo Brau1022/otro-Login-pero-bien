@@ -41,6 +41,7 @@ public class Register extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
+
         //if already login go to main menu or whatever you want
         if(fAuth.getCurrentUser() != null){
             //go to any other activity
@@ -87,12 +88,13 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
                         } else {
                             Toast.makeText(Register.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
+                            progressBar.setVisibility(View.GONE);
                         }
 
                     }
