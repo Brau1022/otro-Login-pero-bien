@@ -28,6 +28,7 @@
     </RelativeLayout>
     
     <GridLayout
+        android:id="@+id/mainGrid"
         android:columnCount="2"
         android:rowCount="2"
         android:alignmentMode="alignMargins"
