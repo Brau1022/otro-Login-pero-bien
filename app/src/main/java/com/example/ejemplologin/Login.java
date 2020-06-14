@@ -67,6 +67,7 @@ public class Login extends AppCompatActivity {
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("1092452549718-lvi37bu4lj426ev6ktip3c5jves8k3rn.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -74,6 +75,7 @@ public class Login extends AppCompatActivity {
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null){
+
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "User Logged in", Toast.LENGTH_SHORT).show();
         }
@@ -149,7 +151,12 @@ public class Login extends AppCompatActivity {
             try {
                 GoogleSignInAccount signInAcc = singInTask.getResult(ApiException.class);
                 AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAcc.getIdToken(),null);
-                Toast.makeText(this, "Your App is connected", Toast.LENGTH_SHORT).show();
+
+                //datos del correo
+                String personId = signInAcc.getId();
+                String personName = signInAcc.getDisplayName();
+
+                Toast.makeText(this, "Your App is connected" + personName + personId, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                 //Adding to Firebase database (authentication)
