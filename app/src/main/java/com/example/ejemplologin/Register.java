@@ -85,21 +85,27 @@ public class Register extends AppCompatActivity {
                 fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class)); //pasar a un activity diferente
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
-                        }else{
+                        } else {
                             Toast.makeText(Register.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
 
                     }
                 });
+
             }
         });
-
+        mlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Login.class)); //pasar a un activity diferente
+            }
+        });
 
     }
 }
