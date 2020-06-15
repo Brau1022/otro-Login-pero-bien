@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         logout();
                     }else if (finalI == 2){
                         Toast.makeText(MainActivity.this, "Tabla Ganancias Totales", Toast.LENGTH_SHORT).show();
+                        //startActivity(new Intent(getApplicationContext(),Register.class)); //pasar a un activity diferente
                     }else if (finalI == 1){
                         Toast.makeText(MainActivity.this, "Tabla Vehiculos", Toast.LENGTH_SHORT).show();
                     }else if (finalI == 0){
