@@ -10,11 +10,15 @@
     android:background="@drawable/wallpaper_login_firebase">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/img_Driver"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
         android:src="@mipmap/ic_launcher_round"
-        android:layout_marginBottom="50dp">
+        android:clickable="true"
+        android:onClick="DriverRegistration">
+
     </ImageView>
     <EditText
         android:id="@+id/txt_nombrePersona"
@@ -75,5 +79,14 @@
         android:inputType="textPersonName">
 
     </EditText>
+
+    <Button
+        android:id="@+id/btn_add_new_driver"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="60dp"
+        android:onClick="DriverRegistration"
+        android:text="Agregar"
+        android:textSize="40dp" />
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.ejemplologin.Model;
 
+import android.widget.ImageView;
+
 public class Persona {
     private String Uid;
     private String Nombre;
@@ -8,9 +10,9 @@ public class Persona {
     private String Edad;
     private String Payment;
     private String Location;
-    private String ProfilePicture;
     private String CarLicensePlate;
     private String WeeklyCheking;
+    private ImageView ProfilePicture;
 
     public Persona() {
     }
@@ -71,11 +73,11 @@ public class Persona {
         Location = location;
     }
 
-    public String getProfilePicture() {
+    public ImageView getProfilePicture() {
         return ProfilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(ImageView profilePicture) {
         ProfilePicture = profilePicture;
     }
 
