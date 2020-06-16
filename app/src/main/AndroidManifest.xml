@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DriverRegistration"></activity>
+        <activity android:name=".RecycleView_Drivers" />
+        <activity android:name=".DriverRegistration" />
         <activity android:name=".Login" />
         <activity android:name=".Register">
             <intent-filter>
