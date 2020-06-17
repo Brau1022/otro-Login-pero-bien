@@ -1,14 +1,13 @@
 package com.example.ejemplologin;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ejemplologin.Model.Persona;
@@ -48,34 +47,36 @@ public class DriverRegistration extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         //firebaseDatabase.setPersistenceEnabled(true);
         databaseReference = firebaseDatabase.getReference();
+
+        btn_add_new_driver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nombre =txt_nombrePersona.getText().toString().trim();
+                String apellido = txt_apellidoPersona.getText().toString().trim();
+                String cedula = txt_cedulaPersona.getText().toString().trim();
+                String edad = txt_edadPersona.getText().toString().trim();
+                String placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
+
+                    Persona p = new Persona();
+                    p.setUid(UUID.randomUUID().toString());
+                    p.setNombre(nombre);
+                    p.setApellido(apellido);
+                    p.setCedula(cedula);
+                    p.setEdad(edad);
+                    p.setCarLicensePlate(placaVehiculo);
+                    databaseReference.child("Administrador").child(p.getUid()).child(p.getNombre()).setValue(p);
+                startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
+                Toast.makeText(DriverRegistration.this, "Driver Added", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+
+        });
+
+
     }
 
-    //agregar foto haciendo click en la imagen de ANDROID
-    public void DriverRegistration(View view) {
-        Toast.makeText(this, "Image Clicked", Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        String nombre =txt_nombrePersona.getText().toString().trim();
-        String apellido = txt_apellidoPersona.getText().toString().trim();
-        String cedula = txt_cedulaPersona.getText().toString().trim();
-        String edad = txt_edadPersona.getText().toString().trim();
-        String placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
-
-
-        if (item.getItemId() == R.id.btn_add_new_driver){
-            Persona p = new Persona();
-            p.setUid(UUID.randomUUID().toString());
-            p.setNombre(nombre);
-            p.setApellido(apellido);
-            p.setCedula(cedula);
-            p.setEdad(edad);
-            p.setCarLicensePlate(placaVehiculo);
-            databaseReference.child("Administrador").child(p.getUid()).child(p.getNombre()).setValue(p);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

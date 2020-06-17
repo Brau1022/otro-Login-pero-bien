@@ -17,7 +17,7 @@
         android:layout_marginBottom="50dp"
         android:src="@mipmap/ic_launcher_round"
         android:clickable="true"
-        android:onClick="DriverRegistration">
+        >
 
     </ImageView>
     <EditText
@@ -85,7 +85,6 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="60dp"
-        android:onClick="DriverRegistration"
         android:text="Agregar"
         android:textSize="40dp" />
 
