@@ -11,7 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ejemplologin.Model.Persona;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,10 +25,16 @@ public class DriverRegistration extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth fAuth;
 
     EditText txt_nombrePersona, txt_apellidoPersona, txt_cedulaPersona, txt_edadPersona, txtLicensePlatePersona;
     ImageView img_profilePersona;
     Button btn_add_new_driver;
+
+    public static final int GOOGLE_SIGN_IN_CODE = 0;
+    SignInButton signIn;
+    GoogleSignInOptions gso;
+    GoogleSignInClient signInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,7 @@ public class DriverRegistration extends AppCompatActivity {
         btn_add_new_driver = findViewById(R.id.btn_add_new_driver);
 
          initializarFirebase(); //always on top to reach all data bellow.
+         fAuth = FirebaseAuth.getInstance();
     }
 
     private void initializarFirebase() {
@@ -52,11 +63,15 @@ public class DriverRegistration extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String nombre =txt_nombrePersona.getText().toString().trim();
+                String nombre = txt_nombrePersona.getText().toString().trim();
                 String apellido = txt_apellidoPersona.getText().toString().trim();
                 String cedula = txt_cedulaPersona.getText().toString().trim();
                 String edad = txt_edadPersona.getText().toString().trim();
                 String placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
+
+                if (fAuth != null) {
+
+                    String correo = fAuth.getUid().toString().trim();
 
                     Persona p = new Persona();
                     p.setUid(UUID.randomUUID().toString());
@@ -65,18 +80,19 @@ public class DriverRegistration extends AppCompatActivity {
                     p.setCedula(cedula);
                     p.setEdad(edad);
                     p.setCarLicensePlate(placaVehiculo);
-                    databaseReference.child("Administrador").child(p.getUid()).child(p.getNombre()).setValue(p);
-                startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
-                Toast.makeText(DriverRegistration.this, "Driver Added", Toast.LENGTH_SHORT).show();
+                    p.setEmail(correo);
+
+                    databaseReference.child("email").child(p.getEmail()).child(p.getNombre()).setValue(p);
+
+                    startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
+
+                    Toast.makeText(DriverRegistration.this, "Driver Added", Toast.LENGTH_SHORT).show();
 
                 }
-
-
+            }
 
         });
 
-
     }
-
 
 }

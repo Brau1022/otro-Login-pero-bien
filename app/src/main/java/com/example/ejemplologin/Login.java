@@ -1,10 +1,5 @@
 package com.example.ejemplologin;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ejemplologin.Model.Persona;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,14 +24,18 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.text.BreakIterator;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
 
     public static final int GOOGLE_SIGN_IN_CODE = 0;
@@ -49,6 +53,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //always on top to reach all data bellow.
+        initializarFirebase();
+
         setContentView(R.layout.activity_login);
 
         signIn = findViewById(R.id.signIn);
@@ -76,6 +84,15 @@ public class Login extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null){
 
+            //pegar aqui lo de guardar datos
+
+            initializarFirebase();
+
+            String PersonId = mEmail.getText().toString().trim();
+            Persona p = new Persona();
+            p.getPersonId(PersonId);
+            databaseReference.child("email2").child(p.getPersonId()).setValue(p);
+
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "User Logged in", Toast.LENGTH_SHORT).show();
         }
@@ -93,7 +110,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //these variables are used to see if something is written in a textbox
-                String email = mEmail.getText().toString().trim();
+                final String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
 
@@ -116,10 +133,21 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+
+                            String correo = fAuth.getUid().toString().trim();
+
+                            Persona p = new Persona();
+                            p.setEmail(correo);
+                            databaseReference.child("email").child(p.getEmail()).setValue(p);
+
                             Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
+
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
+
+
 
                         } else {
                             Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -141,9 +169,14 @@ public class Login extends AppCompatActivity {
 
 
     }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
 
         if (requestCode == GOOGLE_SIGN_IN_CODE){
             Task<GoogleSignInAccount> singInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -155,6 +188,11 @@ public class Login extends AppCompatActivity {
                 //datos del correo
                 String personId = signInAcc.getId();
                 String personName = signInAcc.getDisplayName();
+
+                Persona p = new Persona();
+                p.setPersonId(personId);
+
+                databaseReference.child("email").child(p.getPersonId()).setValue(p);
 
                 Toast.makeText(this, "Your App is connected" + personName + personId, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -179,5 +217,10 @@ public class Login extends AppCompatActivity {
             }
         }
     }
+    private void initializarFirebase() {
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        //firebaseDatabase.setPersistenceEnabled(true);
+        databaseReference = firebaseDatabase.getReference();}
 
 }

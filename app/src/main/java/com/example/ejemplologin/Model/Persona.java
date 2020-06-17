@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 public class Persona {
     private String Uid;
+    private String Email;
     private String Nombre;
     private String Apellido;
     private String Cedula;
@@ -13,6 +14,23 @@ public class Persona {
     private String CarLicensePlate;
     private String WeeklyCheking;
     private ImageView ProfilePicture;
+    private String  personId;
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getPersonId(String personId) {
+        return this.personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
 
     public Persona() {
     }
@@ -100,5 +118,9 @@ public class Persona {
     @Override
     public String toString() {
         return Nombre;
+    }
+
+    public String getPersonId() {
+        return this.personId;
     }
 }
