@@ -91,9 +91,9 @@ public class Persona {
         Location = location;
     }
 
-    public ImageView getProfilePicture() {
-        return ProfilePicture;
-    }
+    //public int getProfilePicture() {
+       // return ProfilePicture;
+   // }
 
     public void setProfilePicture(ImageView profilePicture) {
         ProfilePicture = profilePicture;
