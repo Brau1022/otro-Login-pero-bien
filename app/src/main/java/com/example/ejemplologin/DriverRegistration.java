@@ -67,14 +67,23 @@ public class DriverRegistration extends AppCompatActivity {
                 String edad = txt_edadPersona.getText().toString().trim();
                 String placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
 
-             //agregaraqui
-
-                //Intent intent = getIntent();
-                //String credential2 = intent.getStringExtra("code");
+        if (fAuth == null){
                 SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-                String credential = result.getString("correo", "data no found");
+                String correo = result.getString("correo", "data no found");
 
-                if (credential != null) {
+            Persona p = new Persona();
+            p.setUid(UUID.randomUUID().toString());
+            p.setNombre(nombre);
+            p.setApellido(apellido);
+            p.setCedula(cedula);
+            p.setEdad(edad);
+            p.setCarLicensePlate(placaVehiculo);
+            p.setEmail(correo);
+
+            databaseReference.child("email").child(p.getEmail()).child(p.getNombre()).setValue(p);
+
+            fAuth = FirebaseAuth.getInstance();
+        }else{
 
                     String correo = fAuth.getUid().toString().trim();
 
