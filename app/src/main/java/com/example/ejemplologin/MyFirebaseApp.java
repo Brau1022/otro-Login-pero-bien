@@ -1,5 +1,4 @@
 package com.example.ejemplologin;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MyFirebaseApp extends android.app.Application{
@@ -8,5 +7,6 @@ public class MyFirebaseApp extends android.app.Application{
         super.onCreate();
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
     }
 }

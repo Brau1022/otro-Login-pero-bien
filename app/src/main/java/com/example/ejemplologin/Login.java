@@ -1,6 +1,8 @@
 package com.example.ejemplologin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,6 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
@@ -56,6 +60,7 @@ public class Login extends AppCompatActivity {
 
         //always on top to reach all data bellow.
         initializarFirebase();
+
 
         setContentView(R.layout.activity_login);
 
@@ -95,6 +100,10 @@ public class Login extends AppCompatActivity {
 
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "User Logged in", Toast.LENGTH_SHORT).show();
+
+
+            SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+            String correo = result.getString("correo", "data no found");
         }
 
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +111,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent sign =  signInClient.getSignInIntent();
                 startActivityForResult(sign, GOOGLE_SIGN_IN_CODE);
+
             }
         });
 
@@ -135,18 +145,21 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
 
-                            String correo = fAuth.getUid().toString().trim();
+                           String correo = fAuth.getUid().toString().trim();
 
                             Persona p = new Persona();
                             p.setEmail(correo);
                             databaseReference.child("email").child(p.getEmail()).setValue(p);
+//ultima vaina que agregue aqui
+                            Intent i = new Intent(getApplicationContext(),RecycleView_Drivers.class);
+                            i.putExtra("code", correo);
+                            startActivity(i);
 
                             Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
-
 
 
                         } else {
@@ -176,32 +189,45 @@ public class Login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
         if (requestCode == GOOGLE_SIGN_IN_CODE){
             Task<GoogleSignInAccount> singInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
                 GoogleSignInAccount signInAcc = singInTask.getResult(ApiException.class);
-                AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAcc.getIdToken(),null);
+                final AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAcc.getIdToken(),null);
 
                 //datos del correo
                 String personId = signInAcc.getId();
                 String personName = signInAcc.getDisplayName();
 
+
                 Persona p = new Persona();
                 p.setPersonId(personId);
 
-                databaseReference.child("email").child(p.getPersonId()).setValue(p);
 
-                Toast.makeText(this, "Your App is connected" + personName + personId, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                //databaseReference.child("email").child(p.getPersonId()).setValue(p);
+
+                //Toast.makeText(this, "Your App is connected" + personName + personId, Toast.LENGTH_SHORT).show();
+               // startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                 //Adding to Firebase database (authentication)
                 fAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                        //Valor iniciando sesion con Google
+                        String correo = fAuth.getUid().toString().trim();
+                        sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("correo", correo);
+                        editor.apply();
+
+
+                        Toast.makeText(Login.this, ""+ correo, Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

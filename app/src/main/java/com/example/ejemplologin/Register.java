@@ -1,9 +1,8 @@
 package com.example.ejemplologin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,10 +46,10 @@ public class Register extends AppCompatActivity {
 
         //if already login go to main menu or whatever you want
         if(fAuth.getCurrentUser() != null){
+
             //go to any other activity
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            //to kill activity
-            finish();
+
         }
 
         mRegister.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +92,12 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
+                            SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                            String correo = result.getString("correo", "data no found");
+
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
+
+
 
                         } else {
                             Toast.makeText(Register.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -106,6 +113,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Login.class)); //pasar a un activity diferente
+
             }
         });
 

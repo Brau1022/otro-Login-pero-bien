@@ -13,7 +13,6 @@ public class Persona {
     private String Location;
     private String CarLicensePlate;
     private String WeeklyCheking;
-    private ImageView ProfilePicture;
     private String  personId;
 
     public String getEmail() {
@@ -96,7 +95,6 @@ public class Persona {
    // }
 
     public void setProfilePicture(ImageView profilePicture) {
-        ProfilePicture = profilePicture;
     }
 
     public String getCarLicensePlate() {
