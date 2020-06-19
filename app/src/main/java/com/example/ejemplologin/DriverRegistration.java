@@ -31,6 +31,7 @@ public class DriverRegistration extends AppCompatActivity {
     Button btn_add_new_driver;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,8 @@ public class DriverRegistration extends AppCompatActivity {
         btn_add_new_driver = findViewById(R.id.btn_add_new_driver);
 
          initializarFirebase(); //always on top to reach all data bellow.
+        //SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+        //String correo = result.getString("correo", "data no found");
 
         //SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
         //String correo = result.getString("correo", "data no found");
@@ -67,9 +70,9 @@ public class DriverRegistration extends AppCompatActivity {
                 String edad = txt_edadPersona.getText().toString().trim();
                 String placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
 
-        if (fAuth == null){
-                SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-                String correo = result.getString("correo", "data no found");
+        if (fAuth != null){
+
+            String correo = fAuth.getUid().toString().trim();
 
             Persona p = new Persona();
             p.setUid(UUID.randomUUID().toString());
@@ -78,35 +81,33 @@ public class DriverRegistration extends AppCompatActivity {
             p.setCedula(cedula);
             p.setEdad(edad);
             p.setCarLicensePlate(placaVehiculo);
-            p.setEmail(correo);
+            p.setPersonId(correo);
 
-            databaseReference.child("email").child(p.getEmail()).child(p.getNombre()).setValue(p);
+            databaseReference.child("email").child(p.getPersonId()).child(p.getNombre()).setValue(p);
 
             fAuth = FirebaseAuth.getInstance();
-        }else{
+        }
 
-                    String correo = fAuth.getUid().toString().trim();
+                SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                String correo = result.getString("correo", "data no found");
 
-                    Persona p = new Persona();
-                    p.setUid(UUID.randomUUID().toString());
-                    p.setNombre(nombre);
-                    p.setApellido(apellido);
-                    p.setCedula(cedula);
-                    p.setEdad(edad);
-                    p.setCarLicensePlate(placaVehiculo);
-                    p.setEmail(correo);
+                Persona p = new Persona();
+                p.setUid(UUID.randomUUID().toString());
+                p.setNombre(nombre);
+                p.setApellido(apellido);
+                p.setCedula(cedula);
+                p.setEdad(edad);
+                p.setCarLicensePlate(placaVehiculo);
+                p.setPersonId(correo);
 
-                    databaseReference.child("email").child(p.getEmail()).child(p.getNombre()).setValue(p);
+                databaseReference.child("email").child(p.getPersonId()).child(p.getNombre()).setValue(p);
 
-                    fAuth = FirebaseAuth.getInstance();
-//chequear esto
+                fAuth = FirebaseAuth.getInstance();
+
+                startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
 
 
-                    startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
-
-                    Toast.makeText(DriverRegistration.this, "Driver Added", Toast.LENGTH_SHORT).show();
-
-                }
+                Toast.makeText(DriverRegistration.this, "Driver Added"+correo, Toast.LENGTH_SHORT).show();
             }
 
         });

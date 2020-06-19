@@ -96,14 +96,77 @@ public class Login extends AppCompatActivity {
             String PersonId = mEmail.getText().toString().trim();
             Persona p = new Persona();
             p.getPersonId(PersonId);
-            databaseReference.child("email2").child(p.getPersonId()).setValue(p);
+            databaseReference.child("email").child(p.getPersonId()).setValue(p);
 
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "User Logged in", Toast.LENGTH_SHORT).show();
 
 
+        }else if (signInAccount == null){
+
+            mLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //these variables are used to see if something is written in a textbox
+                    final String email = mEmail.getText().toString().trim();
+                    String password = mPassword.getText().toString().trim();
+
+
+                    if (TextUtils.isEmpty(email)){
+                        mEmail.setError("Email is required.");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(password)){
+                        mPassword.setError("Password is required.");
+                        return;
+                    }
+                    if (password.length() < 6){
+                        mPassword.setError("Password must have at least 6 characters.");
+                        return;
+                    }
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+
+                                String correo = fAuth.getUid().toString().trim();
+
+                                Persona p = new Persona();
+                                p.setPersonId(correo);
+                                databaseReference.child("email").child(p.getPersonId()).setValue(p);
+//guardar valor de correo aqui
+                                sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("correo", correo);
+                                editor.apply();
+
+                                Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+
+
+                                Toast.makeText(Login.this, ""+correo, Toast.LENGTH_SHORT).show();
+
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
+
+                            } else {
+                                Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+
+                    });
+                }
+            });
+
+        }
+        else{
+            //esto salva al ultimo que se logeo desde google
             SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
             String correo = result.getString("correo", "data no found");
+
         }
 
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -116,60 +179,7 @@ public class Login extends AppCompatActivity {
         });
 
 
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //these variables are used to see if something is written in a textbox
-                final String email = mEmail.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
 
-
-                if (TextUtils.isEmpty(email)){
-                    mEmail.setError("Email is required.");
-                    return;
-                }
-                if (TextUtils.isEmpty(password)){
-                    mPassword.setError("Password is required.");
-                    return;
-                }
-                if (password.length() < 6){
-                    mPassword.setError("Password must have at least 6 characters.");
-                    return;
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-
-                           String correo = fAuth.getUid().toString().trim();
-
-                            Persona p = new Persona();
-                            p.setEmail(correo);
-                            databaseReference.child("email").child(p.getEmail()).setValue(p);
-//ultima vaina que agregue aqui
-                            Intent i = new Intent(getApplicationContext(),RecycleView_Drivers.class);
-                            i.putExtra("code", correo);
-                            startActivity(i);
-
-                            Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-
-
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
-
-
-                        } else {
-                            Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
-            }
-        });
 
 
 
@@ -204,14 +214,6 @@ public class Login extends AppCompatActivity {
                 Persona p = new Persona();
                 p.setPersonId(personId);
 
-
-
-                //databaseReference.child("email").child(p.getPersonId()).setValue(p);
-
-                //Toast.makeText(this, "Your App is connected" + personName + personId, Toast.LENGTH_SHORT).show();
-               // startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-                //Adding to Firebase database (authentication)
                 fAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
 
@@ -221,6 +223,7 @@ public class Login extends AppCompatActivity {
 
                         //Valor iniciando sesion con Google
                         String correo = fAuth.getUid().toString().trim();
+
                         sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("correo", correo);

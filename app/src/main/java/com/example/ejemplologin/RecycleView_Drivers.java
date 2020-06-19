@@ -34,10 +34,10 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
 
 
-    @Override
+    //@Override verificar esto para que no explote
     protected void onStart() {
-        super.onStart();
-        adapter.startListening();
+    super.onStart();
+    adapter.startListening();
 
     }
     @Override
@@ -61,11 +61,15 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
         Toast.makeText(this, ""+correo, Toast.LENGTH_SHORT).show();
 
+
+
         if (correo == null){
             startActivity(new Intent(getApplicationContext(),DriverRegistration.class));
             Toast.makeText(this, "No CORREO", Toast.LENGTH_SHORT).show();
 
         }else {
+
+            Toast.makeText(this, ""+correo, Toast.LENGTH_SHORT).show();
 
             databaseReference = FirebaseDatabase.getInstance().getReference().child("email").child(correo);
 
@@ -80,7 +84,9 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
                     holder.teamtwo.setText(model.getNombre());
                     holder.teamone.setText(model.getApellido());
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    holder.itemView.setOnClickListener(new View.OnClickListener()
+
+                    {
                         @Override
                         public void onClick(View v) {
 

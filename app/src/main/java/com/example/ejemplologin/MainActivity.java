@@ -19,8 +19,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+    SharedPreferences sharedPreferences;
 
     GridLayout mainGrid;
+    private Object SharedPreferences;
 
     @Override
     protected void onStart() {
@@ -37,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mainGrid = (GridLayout)findViewById(R.id.mainGrid);
         setSingleEvent(mainGrid);
 
-        SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-        String correo = result.getString("correo", "data no found");
+
 
     }
 
@@ -51,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                    String correo = result.getString("correo", "data no found");
+
+
                     //Toast.makeText(MainActivity.this, "Click" + finalI, Toast.LENGTH_SHORT).show();
                     if (finalI == 3){
                         Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
@@ -62,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Tabla Vehiculos", Toast.LENGTH_SHORT).show();
 
                     }else if (finalI == 0){
-                        Toast.makeText(MainActivity.this, "Tabla Choferes", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Tabla Choferes"+ correo, Toast.LENGTH_SHORT).show();
+
                         startActivity(new Intent(getApplicationContext(),RecycleView_Drivers.class)); //pasar a un activity diferente
                     }
 
@@ -80,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 .signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+
+                sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.remove("correo");
+                editor.apply();
+
                 startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
             }
         }).addOnFailureListener(new OnFailureListener() {
