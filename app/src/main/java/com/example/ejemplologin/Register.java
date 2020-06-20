@@ -45,7 +45,7 @@ public class Register extends AppCompatActivity {
 
 
         //if already login go to main menu or whatever you want
-        if(fAuth.getCurrentUser() != null){
+        if(fAuth.getAccessToken(true) == null  ){
 
             //go to any other activity
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -53,6 +53,8 @@ public class Register extends AppCompatActivity {
         }
 
         mRegister.setOnClickListener(new View.OnClickListener() {
+            private SharedPreferences sharedPreferences;
+
             @Override
             public void onClick(View v) {
                 //these variables are used to see if something is written in a textbox
@@ -92,8 +94,12 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
-                            SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-                            String correo = result.getString("correo", "data no found");
+                            String correo = fAuth.getUid().toString().trim();
+                                sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("correo", correo);
+                                editor.apply();
+                                editor.commit();
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
@@ -113,6 +119,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Login.class)); //pasar a un activity diferente
+                finish();
 
             }
         });

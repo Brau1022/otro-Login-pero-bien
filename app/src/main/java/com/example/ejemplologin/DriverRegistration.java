@@ -105,6 +105,7 @@ public class DriverRegistration extends AppCompatActivity {
                 fAuth = FirebaseAuth.getInstance();
 
                 startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
+                finish();
 
 
                 Toast.makeText(DriverRegistration.this, "Driver Added"+correo, Toast.LENGTH_SHORT).show();

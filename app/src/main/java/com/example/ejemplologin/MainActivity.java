@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-        String correo = result.getString("correo", "data no found");
-        Toast.makeText(this, "" + correo, Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -40,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
         mainGrid = (GridLayout)findViewById(R.id.mainGrid);
         setSingleEvent(mainGrid);
+
+        SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+        String correo = result.getString("correo", "data no found");
+        Toast.makeText(this, "" + correo, Toast.LENGTH_SHORT).show();
+
+  if (correo == "data no found"){
+      Toast.makeText(this, "NO HAY CORREO", Toast.LENGTH_SHORT).show();
+      startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
+      finish();
+  }
 
     }
 

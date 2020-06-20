@@ -129,11 +129,13 @@ public class Login extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
 
-                                String correo = fAuth.getUid().toString().trim();
+                                initializarFirebase();
+
+                                String correo = fAuth.getUid();
 
                                 Persona p = new Persona();
                                 p.setPersonId(correo);
-                                databaseReference.child("email").child(p.getPersonId()).setValue(p);
+                                //databaseReference.child("email").child(p.getPersonId()).setValue(p);
 //guardar valor de correo aqui
                                 sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -173,6 +175,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Register.class)); //pasar a un activity diferente
+                finish();
             }
         });
 
@@ -207,7 +210,7 @@ public class Login extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                         String correo = fAuth.getUid().toString().trim();
-                        Toast.makeText(Login.this, "Google" + correo, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Login.this, "Google" + correo, Toast.LENGTH_SHORT).show();
 
                         sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -215,6 +218,7 @@ public class Login extends AppCompatActivity {
                         editor.apply();
 
                         startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
+                        finish();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {

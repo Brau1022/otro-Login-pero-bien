@@ -81,14 +81,18 @@ public class RecycleView_Drivers extends AppCompatActivity {
             adapter = new FirebaseRecyclerAdapter<Persona, FirebaseViewHolder>(options) {
                 @Override
                 protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Persona persona) {
-                    firebaseViewHolder.teamone.setText(persona.getNombre());
-                    firebaseViewHolder.teamtwo.setText(persona.getApellido());
-                    firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                        }
-                    });
+                    firebaseViewHolder.teamone.setText(persona.getNombre());
+
+                    firebaseViewHolder.teamtwo.setText(persona.getApellido());
+
+
+                    //firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                      //  @Override
+                      //  public void onClick(View v) {
+
+                       // }
+                    //});
                 }
 
                /* @Override
@@ -127,7 +131,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.icon_add){
             startActivity(new Intent(getApplicationContext(),DriverRegistration.class));
-            finish();
+            //finish();
         }
         return true;
     }
