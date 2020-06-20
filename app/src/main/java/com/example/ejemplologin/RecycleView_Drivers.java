@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ejemplologin.Model.DataSetFire;
+import com.example.ejemplologin.Model.Persona;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -27,9 +28,9 @@ import java.util.ArrayList;
 public class RecycleView_Drivers extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<DataSetFire> arrayList;
-    private FirebaseRecyclerOptions<DataSetFire> options;
-    private FirebaseRecyclerAdapter<DataSetFire,FirebaseViewHolder> adapter;
+    private ArrayList<Persona> arrayList;
+    private FirebaseRecyclerOptions<Persona> options;
+    private FirebaseRecyclerAdapter<Persona,FirebaseViewHolder> adapter;
     private DatabaseReference databaseReference;
 
 
@@ -54,36 +55,48 @@ public class RecycleView_Drivers extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        arrayList = new ArrayList<DataSetFire>();
+        arrayList = new ArrayList<Persona>();
 
         SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
         String correo = result.getString("correo", "data no found");
 
-        Toast.makeText(this, ""+correo, Toast.LENGTH_SHORT).show();
 
 
 
         if (correo == null){
             startActivity(new Intent(getApplicationContext(),DriverRegistration.class));
             Toast.makeText(this, "No CORREO", Toast.LENGTH_SHORT).show();
+            finish();
 
         }else {
 
-            Toast.makeText(this, ""+correo, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ""+ correo, Toast.LENGTH_SHORT).show();
 
             databaseReference = FirebaseDatabase.getInstance().getReference().child("email").child(correo);
 
             databaseReference.keepSynced(true);
 
-            options = new FirebaseRecyclerOptions.Builder<DataSetFire>().setQuery(databaseReference, DataSetFire.class).build();
+            options = new FirebaseRecyclerOptions.Builder<Persona>().setQuery(databaseReference, Persona.class).build();
 
-            adapter = new FirebaseRecyclerAdapter<DataSetFire, FirebaseViewHolder>(options) {
+            adapter = new FirebaseRecyclerAdapter<Persona, FirebaseViewHolder>(options) {
                 @Override
+                protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Persona persona) {
+                    firebaseViewHolder.teamone.setText(persona.getNombre());
+                    firebaseViewHolder.teamtwo.setText(persona.getApellido());
+                    firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                }
+
+               /* @Override
                 protected void onBindViewHolder(@NonNull FirebaseViewHolder holder, int position, @NonNull DataSetFire model) {
 
 
-                    holder.teamtwo.setText(model.getNombre());
-                    holder.teamone.setText(model.getApellido());
+                    holder.teamtwo.setText(model.getApellido());
+                    holder.teamone.setText(model.getNombre());
                     holder.itemView.setOnClickListener(new View.OnClickListener()
 
                     {
@@ -92,7 +105,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
                         }
                     });
-                }
+                }*/
 
                 @NonNull
                 @Override

@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+        String correo = result.getString("correo", "data no found");
+        Toast.makeText(this, "" + correo, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         mainGrid = (GridLayout)findViewById(R.id.mainGrid);
         setSingleEvent(mainGrid);
-
-
 
     }
 
@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
                     String correo = result.getString("correo", "data no found");
 
-
                     //Toast.makeText(MainActivity.this, "Click" + finalI, Toast.LENGTH_SHORT).show();
                     if (finalI == 3){
-                        Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
                         logout();
                     }else if (finalI == 2){
                         Toast.makeText(MainActivity.this, "Tabla Ganancias Totales", Toast.LENGTH_SHORT).show();
@@ -79,9 +79,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     //logout process
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
+
+        //FirebaseAuth.getInstance().signOut();
+
         GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build())
                 .signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -90,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
                 sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
-                editor.remove("correo");
                 editor.apply();
+                editor.commit();
 
-                startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "SingOut Failed", Toast.LENGTH_SHORT).show();
             }
         });
+        Toast.makeText(this, "LOGOUT", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(),Login.class)); //pasar a un activity diferente
         finish();
     }

@@ -62,6 +62,7 @@ public class Login extends AppCompatActivity {
         initializarFirebase();
 
 
+
         setContentView(R.layout.activity_login);
 
         signIn = findViewById(R.id.signIn);
@@ -89,8 +90,6 @@ public class Login extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null){
 
-            //pegar aqui lo de guardar datos
-
             initializarFirebase();
 
             String PersonId = mEmail.getText().toString().trim();
@@ -99,28 +98,26 @@ public class Login extends AppCompatActivity {
             databaseReference.child("email").child(p.getPersonId()).setValue(p);
 
             startActivity(new Intent(this, MainActivity.class));
-            Toast.makeText(this, "User Logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Google User Logged in", Toast.LENGTH_SHORT).show(); }
 
-
-        }else if (signInAccount == null){
 
             mLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //these variables are used to see if something is written in a textbox
+
                     final String email = mEmail.getText().toString().trim();
                     String password = mPassword.getText().toString().trim();
 
 
-                    if (TextUtils.isEmpty(email)){
+                    if (TextUtils.isEmpty(email)) {
                         mEmail.setError("Email is required.");
                         return;
                     }
-                    if (TextUtils.isEmpty(password)){
+                    if (TextUtils.isEmpty(password)) {
                         mPassword.setError("Password is required.");
                         return;
                     }
-                    if (password.length() < 6){
+                    if (password.length() < 6) {
                         mPassword.setError("Password must have at least 6 characters.");
                         return;
                     }
@@ -138,16 +135,15 @@ public class Login extends AppCompatActivity {
                                 p.setPersonId(correo);
                                 databaseReference.child("email").child(p.getPersonId()).setValue(p);
 //guardar valor de correo aqui
-                                sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                                sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("correo", correo);
                                 editor.apply();
+                                editor.commit();
 
-                                Toast.makeText(Login.this, "Logged Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Local Logged Successfully" + correo, Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
 
-
-                                Toast.makeText(Login.this, ""+correo, Toast.LENGTH_SHORT).show();
 
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
@@ -161,13 +157,8 @@ public class Login extends AppCompatActivity {
                 }
             });
 
-        }
-        else{
-            //esto salva al ultimo que se logeo desde google
-            SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
-            String correo = result.getString("correo", "data no found");
 
-        }
+
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,11 +168,6 @@ public class Login extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,13 +180,14 @@ public class Login extends AppCompatActivity {
     }
 
 
-
+//lo que hace el boton de google.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GOOGLE_SIGN_IN_CODE){
             Task<GoogleSignInAccount> singInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+
 
             try {
                 GoogleSignInAccount signInAcc = singInTask.getResult(ApiException.class);
@@ -209,8 +196,6 @@ public class Login extends AppCompatActivity {
                 //datos del correo
                 String personId = signInAcc.getId();
                 String personName = signInAcc.getDisplayName();
-
-
                 Persona p = new Persona();
                 p.setPersonId(personId);
 
@@ -221,16 +206,16 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
-                        //Valor iniciando sesion con Google
                         String correo = fAuth.getUid().toString().trim();
+                        Toast.makeText(Login.this, "Google" + correo, Toast.LENGTH_SHORT).show();
 
                         sharedPreferences = getSharedPreferences("save data", Context.MODE_PRIVATE );
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("correo", correo);
                         editor.apply();
 
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class)); //pasar a un activity diferente
 
-                        Toast.makeText(Login.this, ""+ correo, Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
