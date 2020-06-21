@@ -53,6 +53,9 @@ public class DriverRegistration extends AppCompatActivity {
     // Uri indicates, where the image will be picked from
     private Uri filePath;
 
+    public String url22;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,9 @@ public class DriverRegistration extends AppCompatActivity {
                                 getContentResolver(),
                                 filePath);
                 img_profilePersona.setImageBitmap(bitmap);
+
+                uploadImage();
+
             }
 
             catch (IOException e) {
@@ -143,10 +149,6 @@ public class DriverRegistration extends AppCompatActivity {
             final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
 
 
-
-
-
-
             // adding listeners on upload
             // or failure of image
             ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -155,37 +157,16 @@ public class DriverRegistration extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                                 {
 
-
-                                   if(fAuth!= null) {
-
-
                                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                            @Override
                                            public void onSuccess(Uri uri) {
                                                Log.e("Tuts+", "uri: " + uri.toString());
                                                //Handle whatever you're going to do with the URL here
+                                               url22 = uri.toString();
+
                                            }
+
                                        });
-
-                                       String correo = fAuth.getUid().trim();
-                                       String imagen = ref.toString();
-                                       String nombre2 = txt_nombrePersona.getText().toString().trim(); String apellido = txt_apellidoPersona.getText().toString().trim();
-                                       String cedula2 = txt_cedulaPersona.getText().toString().trim();
-                                       String edad2 = txt_edadPersona.getText().toString().trim();
-                                       String placaVehiculo2= txtLicensePlatePersona.getText().toString().trim();
-
-
-                                       Persona p = new Persona();
-                                       p.setProfilePicture(imagen);
-                                       p.setPersonId(correo);
-                                       p.setNombre(nombre2);
-                                       p.setUid(UUID.randomUUID().toString());
-                                       p.setApellido(apellido);
-                                       p.setCedula(cedula2);
-                                       p.setEdad(edad2);
-                                       p.setCarLicensePlate(placaVehiculo2);
-
-                                       databaseReference.child("email").child(p.getPersonId()).child(p.getNombre()).setValue(p);
 
                                        // Image uploaded successfully
                                        // Dismiss dialog
@@ -197,7 +178,7 @@ public class DriverRegistration extends AppCompatActivity {
                                    }
 
 
-                                }
+
                             })
 
                     .addOnFailureListener(new OnFailureListener() {
@@ -247,7 +228,7 @@ public class DriverRegistration extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                uploadImage();
+
 
 
                 String nombre = txt_nombrePersona.getText().toString().trim();
@@ -262,11 +243,10 @@ public class DriverRegistration extends AppCompatActivity {
 
         if (fAuth != null){
 
-            String correo = fAuth.getUid().toString().trim();
-
-
+            String correo = fAuth.getUid();
 
             Persona p = new Persona();
+            p.setProfilePicture(url22);
             p.setUid(UUID.randomUUID().toString());
             p.setNombre(nombre);
             p.setApellido(apellido);
@@ -284,6 +264,7 @@ public class DriverRegistration extends AppCompatActivity {
                 String correo = result.getString("correo", "data no found");
 
                 Persona p = new Persona();
+                p.setProfilePicture(url22);
                 p.setUid(UUID.randomUUID().toString());
                 p.setNombre(nombre);
                 p.setApellido(apellido);

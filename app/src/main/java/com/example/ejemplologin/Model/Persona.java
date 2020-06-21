@@ -1,6 +1,7 @@
 package com.example.ejemplologin.Model;
 
-import android.widget.ImageView;
+
+
 
 public class Persona {
     private String Uid;
@@ -116,6 +117,7 @@ public class Persona {
         WeeklyCheking = weeklyCheking;
     }
 // Verificar esta parte.
+
     @Override
     public String toString() {
         return Nombre;

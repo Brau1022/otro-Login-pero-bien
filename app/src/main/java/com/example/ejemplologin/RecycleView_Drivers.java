@@ -96,21 +96,6 @@ public class RecycleView_Drivers extends AppCompatActivity {
                     //});
                 }
 
-               /* @Override
-                protected void onBindViewHolder(@NonNull FirebaseViewHolder holder, int position, @NonNull DataSetFire model) {
-
-
-                    holder.teamtwo.setText(model.getApellido());
-                    holder.teamone.setText(model.getNombre());
-                    holder.itemView.setOnClickListener(new View.OnClickListener()
-
-                    {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-                }*/
 
                 @NonNull
                 @Override
