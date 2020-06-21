@@ -36,6 +36,32 @@
             android:id="@+id/Teamtwo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="#BC2323"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cedula:"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:textColor="#F6F6F6"
+            android:id="@+id/Team3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="#BC2323"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehiculo Asignado:"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:textColor="#F6F6F6"
+            android:id="@+id/Team4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

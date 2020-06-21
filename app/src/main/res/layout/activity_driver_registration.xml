@@ -23,6 +23,7 @@
     <EditText
         android:id="@+id/txt_nombrePersona"
         android:hint="Nombre"
+        android:textColor="#838080"
         android:textColorHint="#838080"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
     </EditText>
 
     <EditText
+        android:textColor="#838080"
         android:id="@+id/txt_apellidoPersona"
         android:textColorHint="#838080"
         android:hint="Apellido"
@@ -45,6 +47,7 @@
     </EditText>
 
     <EditText
+        android:textColor="#838080"
         android:id="@+id/txt_cedulaPersona"
         android:textColorHint="#838080"
         android:hint="Cedula"
@@ -57,6 +60,7 @@
     </EditText>
 
     <EditText
+        android:textColor="#838080"
         android:id="@+id/txt_edadPersona"
         android:textColorHint="#838080"
         android:hint="Edad"
@@ -69,6 +73,7 @@
     </EditText>
 
     <EditText
+        android:textColor="#838080"
         android:id="@+id/txt_LicensePlatePersona"
         android:textColorHint="#838080"
         android:hint="Placa Vehiculo Asignado"
@@ -83,9 +88,10 @@
     <Button
         android:id="@+id/btn_add_new_driver"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="60dp"
-        android:text="Agregar"
-        android:textSize="40dp" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Agregar Condutor"
+        android:textSize="20sp" />
 
 </LinearLayout>

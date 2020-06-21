@@ -14,6 +14,15 @@ public class Persona {
     private String CarLicensePlate;
     private String WeeklyCheking;
     private String  personId;
+    private String ProfilePicture;
+
+    public String getProfilePicture() {
+        return ProfilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        ProfilePicture = profilePicture;
+    }
 
     public String getEmail() {
         return Email;
@@ -90,12 +99,6 @@ public class Persona {
         Location = location;
     }
 
-    //public int getProfilePicture() {
-       // return ProfilePicture;
-   // }
-
-    public void setProfilePicture(ImageView profilePicture) {
-    }
 
     public String getCarLicensePlate() {
         return CarLicensePlate;

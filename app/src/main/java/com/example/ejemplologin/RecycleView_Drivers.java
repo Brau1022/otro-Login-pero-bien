@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -16,12 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ejemplologin.Model.DataSetFire;
 import com.example.ejemplologin.Model.Persona;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -83,8 +82,10 @@ public class RecycleView_Drivers extends AppCompatActivity {
                 protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Persona persona) {
 
                     firebaseViewHolder.teamone.setText(persona.getNombre());
-
                     firebaseViewHolder.teamtwo.setText(persona.getApellido());
+                    firebaseViewHolder.team3.setText(persona.getCedula());
+                    firebaseViewHolder.team4.setText(persona.getCarLicensePlate());
+                    Picasso.get().load(persona.getProfilePicture()).into(firebaseViewHolder.imagenchofer);
 
 
                     //firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
