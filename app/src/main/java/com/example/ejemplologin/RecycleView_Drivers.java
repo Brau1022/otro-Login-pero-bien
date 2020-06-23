@@ -34,17 +34,6 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
 
 
-    //@Override verificar esto para que no explote
-    protected void onStart() {
-    super.onStart();
-    adapter.startListening();
-
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +95,19 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
             recyclerView.setAdapter(adapter);
         }}
+
+    //@Override verificar esto para que no explote
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
 
 
     public boolean onCreateOptionsMenu(Menu menu) {

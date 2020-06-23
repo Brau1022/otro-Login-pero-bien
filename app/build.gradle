@@ -51,6 +51,10 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:4.2.1'
 
 
+    //to make imageview round
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
 
 
 
