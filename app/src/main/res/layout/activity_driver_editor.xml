@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:orientation="vertical"
+android:padding="15dp"
+android:layout_height="match_parent"
+tools:context=".DriverEditor"
+android:background="@drawable/wallpaper_login_firebase">
+
+<ImageView
+    android:id="@+id/img_Driver"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="50dp"
+    android:src="@mipmap/ic_launcher_round"
+    android:clickable="true"
+    >
+
+</ImageView>
+<EditText
+    android:id="@+id/txt_nombrePersona"
+    android:hint="Nombre"
+    android:textColor="#838080"
+    android:textColorHint="#838080"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:ems="10"
+    android:inputType="textPersonName">
+
+</EditText>
+
+<EditText
+    android:textColor="#838080"
+    android:id="@+id/txt_apellidoPersona"
+    android:textColorHint="#838080"
+    android:hint="Apellido"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:ems="10"
+    android:inputType="textPersonName">
+
+</EditText>
+
+<EditText
+    android:textColor="#838080"
+    android:id="@+id/txt_cedulaPersona"
+    android:textColorHint="#838080"
+    android:hint="Cedula"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:ems="10"
+    android:inputType="textPersonName">
+
+</EditText>
+
+<EditText
+    android:textColor="#838080"
+    android:id="@+id/txt_edadPersona"
+    android:textColorHint="#838080"
+    android:hint="Edad"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:ems="10"
+    android:inputType="textPersonName">
+
+</EditText>
+
+<EditText
+    android:textColor="#838080"
+    android:id="@+id/txt_LicensePlatePersona"
+    android:textColorHint="#838080"
+    android:hint="Placa Vehiculo Asignado"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:ems="10"
+    android:inputType="textPersonName">
+
+</EditText>
+
+</LinearLayout>

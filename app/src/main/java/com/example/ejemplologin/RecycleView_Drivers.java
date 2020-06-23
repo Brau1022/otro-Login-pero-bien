@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -77,12 +78,14 @@ public class RecycleView_Drivers extends AppCompatActivity {
                     Picasso.get().load(persona.getProfilePicture()).into(firebaseViewHolder.imagenchofer);
 
 
-                    //firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                      //  @Override
-                      //  public void onClick(View v) {
+                    firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                       // }
-                    //});
+                            startActivity(new Intent(getApplicationContext(),DriverEditor.class));
+
+                       }
+                    });
                 }
 
 
