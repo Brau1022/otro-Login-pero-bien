@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ejemplologin.Model.Persona;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +24,7 @@ public class Driver_editor extends AppCompatActivity {
     EditText txt_nombrePersona, txt_apellidoPersona, txt_cedulaPersona, txt_edadPersona, txtLicensePlatePersona;
     ImageView img_profilePersona;
     Button btn_delete, btn_update;
-    Persona persona;
+
 
     private DatabaseReference databaseReference;
     private SharedPreferences sharedPreferences;
@@ -78,10 +77,6 @@ public class Driver_editor extends AppCompatActivity {
 
         } else {
 
-            //databaseReference = FirebaseDatabase.getInstance().getReference().child("email").child(correo).child(nombreChofer).child("profilePicture");
-
-            //databaseReference.keepSynced(true);
-
 
             txt_nombrePersona.setText(nombreChofer.toString().trim());
             txt_apellidoPersona.setText(apellidoChofer.toString().trim());
@@ -89,7 +84,6 @@ public class Driver_editor extends AppCompatActivity {
             txt_edadPersona.setText(edadChofer.toString().trim());
             txtLicensePlatePersona.setText(placaChofer.toString().trim());
             Picasso.get().load(fotoChofer).into(img_profilePersona);
-
 
 
         }

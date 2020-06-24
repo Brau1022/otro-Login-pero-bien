@@ -104,11 +104,7 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "Google User Logged in", Toast.LENGTH_SHORT).show();
         }
-        if(correo == "data no found"){
-            startActivity(new Intent(getApplicationContext(), Login.class)); //pasar a un activity diferente
-            finish();
 
-        }
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
