@@ -18,6 +18,7 @@ import com.example.ejemplologin.Model.Persona;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class Driver_editor extends AppCompatActivity {
 
@@ -29,6 +30,7 @@ public class Driver_editor extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private SharedPreferences sharedPreferences;
     private FirebaseDatabase firebaseDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,10 @@ public class Driver_editor extends AppCompatActivity {
         SharedPreferences result6 = getSharedPreferences("save data2", Context.MODE_PRIVATE);
         String edadChofer = result6.getString("edadChofer", "data no found");
 
+        SharedPreferences result7 = getSharedPreferences("save data2", Context.MODE_PRIVATE);
+        String fotoChofer = result7.getString("fotoChofer", "data no found");
+
+
         initializarFirebase();
 
         if (correo == null) {
@@ -72,18 +78,18 @@ public class Driver_editor extends AppCompatActivity {
 
         } else {
 
-            // databaseReference = FirebaseDatabase.getInstance().getReference().child("email").child(correo).child(nombreChofer);
+            //databaseReference = FirebaseDatabase.getInstance().getReference().child("email").child(correo).child(nombreChofer).child("profilePicture");
 
             //databaseReference.keepSynced(true);
 
 
-            // Persona persona = new Persona();
-            // persona.setPersonId(correo);
             txt_nombrePersona.setText(nombreChofer.toString().trim());
             txt_apellidoPersona.setText(apellidoChofer.toString().trim());
             txt_cedulaPersona.setText(cedulaChofer.toString().trim());
             txt_edadPersona.setText(edadChofer.toString().trim());
             txtLicensePlatePersona.setText(placaChofer.toString().trim());
+            Picasso.get().load(fotoChofer).into(img_profilePersona);
+
 
 
         }

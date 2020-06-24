@@ -54,7 +54,7 @@ public class DriverRegistration extends AppCompatActivity {
     private Uri filePath;
 
     public String url22;
-
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -70,7 +70,7 @@ public class DriverRegistration extends AppCompatActivity {
         img_profilePersona = findViewById(R.id.img_Driver);
         btn_add_new_driver = findViewById(R.id.btn_add_new_driver);
 
-         initializarFirebase();
+        initializarFirebase();
 
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
@@ -82,7 +82,7 @@ public class DriverRegistration extends AppCompatActivity {
                 SelectImage();
             }
 
-            });
+        });
 
     }
 
@@ -126,15 +126,13 @@ public class DriverRegistration extends AppCompatActivity {
 
                 uploadImage();
 
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
             }
         }
 
-}
+    }
 
     private void uploadImage() {
 
@@ -153,38 +151,35 @@ public class DriverRegistration extends AppCompatActivity {
             // or failure of image
             ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                       ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                           @Override
-                                           public void onSuccess(Uri uri) {
-                                               Log.e("Tuts+", "uri: " + uri.toString());
-                                               //Handle whatever you're going to do with the URL here
-                                               url22 = uri.toString();
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.e("Tuts+", "uri: " + uri.toString());
+                            //Handle whatever you're going to do with the URL here
+                            url22 = uri.toString();
 
-                                           }
+                        }
 
-                                       });
+                    });
 
-                                       // Image uploaded successfully
-                                       // Dismiss dialog
-                                       progressDialog.dismiss();
-                                       Toast
-                                               .makeText(DriverRegistration.this, "Image Uploaded!!", Toast.LENGTH_SHORT)
-                                               .show();
+                    // Image uploaded successfully
+                    // Dismiss dialog
+                    progressDialog.dismiss();
+                    Toast
+                            .makeText(DriverRegistration.this, "Image Uploaded!!", Toast.LENGTH_SHORT)
+                            .show();
 
-                                   }
-
+                }
 
 
-                            })
+            })
 
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                        public void onFailure(@NonNull Exception e) {
 
                             // Error, Image not uploaded
                             progressDialog.dismiss();
@@ -202,15 +197,14 @@ public class DriverRegistration extends AppCompatActivity {
                                 // percentage on the dialog box
                                 @Override
                                 public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
+                                        UploadTask.TaskSnapshot taskSnapshot) {
                                     double progress
                                             = (100.0
                                             * taskSnapshot.getBytesTransferred()
                                             / taskSnapshot.getTotalByteCount());
                                     progressDialog.setMessage(
                                             "Uploaded "
-                                                    + (int)progress + "%");
+                                                    + (int) progress + "%");
                                 }
                             });
         }
@@ -229,8 +223,6 @@ public class DriverRegistration extends AppCompatActivity {
             public void onClick(View v) {
 
 
-
-
                 String nombre = txt_nombrePersona.getText().toString().trim();
                 String apellido = txt_apellidoPersona.getText().toString().trim();
                 String cedula = txt_cedulaPersona.getText().toString().trim();
@@ -239,28 +231,26 @@ public class DriverRegistration extends AppCompatActivity {
                 // subir la foto
 
 
+                if (fAuth != null) {
 
+                    String correo = fAuth.getUid();
 
-        if (fAuth != null){
+                    Persona p = new Persona();
+                    p.setProfilePicture(url22);
+                    p.setUid(UUID.randomUUID().toString());
+                    p.setNombre(nombre);
+                    p.setApellido(apellido);
+                    p.setCedula(cedula);
+                    p.setEdad(edad);
+                    p.setCarLicensePlate(placaVehiculo);
+                    p.setPersonId(correo);
 
-            String correo = fAuth.getUid();
+                    databaseReference.child("email").child(p.getPersonId()).child(p.getNombre()).setValue(p);
 
-            Persona p = new Persona();
-            p.setProfilePicture(url22);
-            p.setUid(UUID.randomUUID().toString());
-            p.setNombre(nombre);
-            p.setApellido(apellido);
-            p.setCedula(cedula);
-            p.setEdad(edad);
-            p.setCarLicensePlate(placaVehiculo);
-            p.setPersonId(correo);
+                    fAuth = FirebaseAuth.getInstance();
+                }
 
-            databaseReference.child("email").child(p.getPersonId()).child(p.getNombre()).setValue(p);
-
-            fAuth = FirebaseAuth.getInstance();
-        }
-
-                SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE );
+                SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE);
                 String correo = result.getString("correo", "data no found");
 
                 Persona p = new Persona();
@@ -281,8 +271,6 @@ public class DriverRegistration extends AppCompatActivity {
 
                 Toast.makeText(DriverRegistration.this, "Driver Added", Toast.LENGTH_SHORT).show();
             }
-
-
 
 
         });

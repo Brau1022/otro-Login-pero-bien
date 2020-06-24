@@ -41,6 +41,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
     public String cedulaChofer;
     public String placaChofer;
     public String edadChofer;
+    public String fotoChofer;
 
 
     @Override
@@ -90,7 +91,6 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
 
 
-
 //on click it brings last user added.
                     firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -102,6 +102,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
                             cedulaChofer = persona.getCedula();
                             placaChofer = persona.getCarLicensePlate();
                             edadChofer = persona.getEdad();
+                            fotoChofer = persona.getProfilePicture();
 
                             //Nombre Chofer
                             sharedPreferences = getSharedPreferences("save data2", Context.MODE_PRIVATE);
@@ -133,6 +134,14 @@ public class RecycleView_Drivers extends AppCompatActivity {
                             editor.putString("edadChofer", edadChofer);
                             editor.apply();
                             editor.commit();
+
+                            sharedPreferences = getSharedPreferences("save data2", Context.MODE_PRIVATE);
+                            editor = sharedPreferences.edit();
+                            editor.putString("fotoChofer", fotoChofer);
+                            editor.apply();
+                            editor.commit();
+
+
 
                             Toast.makeText(RecycleView_Drivers.this, ""+ nombreChofer, Toast.LENGTH_SHORT).show();
                            startActivity(new Intent(getApplicationContext(), Driver_editor.class));
