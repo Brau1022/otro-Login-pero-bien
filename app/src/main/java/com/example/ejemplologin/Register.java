@@ -45,11 +45,9 @@ public class Register extends AppCompatActivity {
 
 
         //if already login go to main menu or whatever you want
-        if(fAuth.getAccessToken(true) == null  ){
-
-            //go to any other activity
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-
+        //go to any other activity
+        if (!(fAuth.getAccessToken(false) != null)) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         mRegister.setOnClickListener(new View.OnClickListener() {

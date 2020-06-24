@@ -13,9 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".DriverEditor"
+            android:name=".Driver_editor"
             android:label="Editar Chofer"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        </activity>
         <activity
             android:name=".RecycleView_Drivers"
             android:label="Choferes"

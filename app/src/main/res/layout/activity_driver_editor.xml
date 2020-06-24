@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:orientation="vertical"
 android:padding="15dp"
 android:layout_height="match_parent"
-tools:context=".DriverEditor"
+tools:context=".Driver_editor"
 android:background="@drawable/wallpaper_login_firebase">
 
 <ImageView
