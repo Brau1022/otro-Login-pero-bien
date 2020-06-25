@@ -285,7 +285,7 @@ public class Driver_editor extends AppCompatActivity {
         initializarFirebase();
         fAuth = FirebaseAuth.getInstance();
 
-        if (item.getItemId() == R.id.icon_delete) {
+        if (item.getItemId() == R.id.icon_save) {
 
             if (fAuth != null) {
 
@@ -327,7 +327,42 @@ public class Driver_editor extends AppCompatActivity {
             }
         }
 
+        if (item.getItemId() == R.id.icon_delete) {
+
+            if (fAuth != null) {
+
+                String correo = fAuth.getUid();
+                nombre = txt_nombrePersona.getText().toString().trim();
+
+                Persona p = new Persona();
+                if (url22 != null) {
+                    p.setProfilePicture(url22);
+                } else {
+                    p.setProfilePicture(fotonochanged);
+                }
+
+                p.setUid(UUID.randomUUID().toString());
+                p.setNombre(nombre);
+                p.setPersonId(correo);
+
+
+                databaseReference.child("email").child(correo).child(nombre).removeValue();
+
+                startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class)); //pasar a un activity diferente
+
+                Toast.makeText(Driver_editor.this, "Driver Updated", Toast.LENGTH_SHORT).show();
+
+
+                startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class));
+                finish();
+
+            }
+        }
+
         return true;
 
+
     }
+
+
 }
