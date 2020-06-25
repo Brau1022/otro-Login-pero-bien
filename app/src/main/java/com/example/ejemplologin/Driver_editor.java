@@ -63,6 +63,7 @@ public class Driver_editor extends AppCompatActivity {
     StorageReference storageReference;
 
     public String url22;
+    public String fotonochanged;
 
 
     @Override
@@ -99,6 +100,7 @@ public class Driver_editor extends AppCompatActivity {
 
         SharedPreferences result7 = getSharedPreferences("save data2", Context.MODE_PRIVATE);
         String fotoChofer = result7.getString("fotoChofer", "data no found");
+        fotonochanged = fotoChofer.toString().trim();
 
 
         initializarFirebase();
@@ -285,11 +287,9 @@ public class Driver_editor extends AppCompatActivity {
 
         if (item.getItemId() == R.id.icon_delete) {
 
-            //uploadImage();
-
             if (fAuth != null) {
 
-              String correo = fAuth.getUid();
+                String correo = fAuth.getUid();
 
 
                 nombre = txt_nombrePersona.getText().toString().trim();
@@ -299,11 +299,13 @@ public class Driver_editor extends AppCompatActivity {
                 placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
 
 
-                //SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE);
-                //String correo = result.getString("correo", "data no found");
-
                 Persona p = new Persona();
-                p.setProfilePicture(url22);
+                if (url22 != null) {
+                    p.setProfilePicture(url22);
+                } else {
+                    p.setProfilePicture(fotonochanged);
+                }
+
                 p.setUid(UUID.randomUUID().toString());
                 p.setNombre(nombre);
                 p.setApellido(apellido);
@@ -320,18 +322,6 @@ public class Driver_editor extends AppCompatActivity {
                 Toast.makeText(Driver_editor.this, "Driver Updated", Toast.LENGTH_SHORT).show();
 
 
-
-            /*sharedPreferences = getSharedPreferences("save data2", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("nombreChofer");
-            editor.remove("apellidoChofer");
-            editor.remove("cedulaChofer");
-            editor.remove("placaChofer");
-            editor.remove("edadChofer");
-            editor.clear();
-            editor.apply();
-            editor.commit();
-*/
                 startActivity(new Intent(getApplicationContext(), RecycleView_Drivers.class));
                 finish();
             }
