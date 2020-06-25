@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,8 +44,9 @@ public class Driver_editor extends AppCompatActivity {
     // request code
     private final int PICK_IMAGE_REQUEST = 22;
     // Uri indicates, where the image will be picked from
-    private Uri filePath;
-    EditText txt_nombrePersona, txt_apellidoPersona, txt_cedulaPersona, txt_edadPersona, txtLicensePlatePersona;
+    public Uri filePath;
+    EditText txt_apellidoPersona, txt_cedulaPersona, txt_edadPersona, txtLicensePlatePersona;
+    TextView txt_nombrePersona;
     ImageView img_profilePersona;
     Button btn_delete, btn_update;
     public String nombre, apellido, cedula, placaVehiculo, edad;
@@ -101,6 +103,11 @@ public class Driver_editor extends AppCompatActivity {
 
         initializarFirebase();
 
+
+        // get the Firebase  storage reference
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         img_profilePersona.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +147,7 @@ public class Driver_editor extends AppCompatActivity {
                         intent,
                         "Select Image from here..."),
                 PICK_IMAGE_REQUEST);
-        uploadImage();
+
 
     }
 
@@ -168,6 +175,7 @@ public class Driver_editor extends AppCompatActivity {
                                 getContentResolver(),
                                 filePath);
                 img_profilePersona.setImageBitmap(bitmap);
+                uploadImage();
 
 
             } catch (IOException e) {
@@ -277,6 +285,8 @@ public class Driver_editor extends AppCompatActivity {
 
         if (item.getItemId() == R.id.icon_delete) {
 
+            //uploadImage();
+
             if (fAuth != null) {
 
               String correo = fAuth.getUid();
@@ -286,7 +296,7 @@ public class Driver_editor extends AppCompatActivity {
                 apellido = txt_apellidoPersona.getText().toString().trim();
                 cedula = txt_cedulaPersona.getText().toString().trim();
                 edad = txt_edadPersona.getText().toString().trim();
-                //placaVehiculo = txtLicensePlatePersona.toString().trim();
+                placaVehiculo = txtLicensePlatePersona.getText().toString().trim();
 
 
                 //SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE);
@@ -299,7 +309,7 @@ public class Driver_editor extends AppCompatActivity {
                 p.setApellido(apellido);
                 p.setCedula(cedula);
                 p.setEdad(edad);
-                //p.setCarLicensePlate(placaVehiculo);
+                p.setCarLicensePlate(placaVehiculo);
                 p.setPersonId(correo);
 
 
