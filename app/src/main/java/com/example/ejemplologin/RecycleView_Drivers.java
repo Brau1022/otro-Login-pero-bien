@@ -55,9 +55,13 @@ public class RecycleView_Drivers extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<Persona>();
+        registerForContextMenu(recyclerView);
+
 //datos del correo.
         SharedPreferences result = getSharedPreferences("save data", Context.MODE_PRIVATE);
         String correo = result.getString("correo", "data no found");
+
+
 
 
         if (correo == null) {
@@ -80,7 +84,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
-                protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Persona persona) {
+                protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Persona persona) {
 
 
                     firebaseViewHolder.teamone.setText(persona.getNombre());
@@ -91,11 +95,12 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
 
 
-//on click it brings last user added.
+                    //on click it brings last user added.
                     firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //Toast.makeText(RecycleView_Drivers.this, ""+ i, Toast.LENGTH_SHORT).show();
+
 
                             nombreChofer = persona.getNombre();
                             apellidoChofer = persona.getApellido();
@@ -144,7 +149,10 @@ public class RecycleView_Drivers extends AppCompatActivity {
 
 
                             Toast.makeText(RecycleView_Drivers.this, ""+ nombreChofer, Toast.LENGTH_SHORT).show();
-                           startActivity(new Intent(getApplicationContext(), Driver_editor.class));
+                             startActivity(new Intent(getApplicationContext(), Driver_Options.class));
+                             finish();
+
+
 
 
                         }
@@ -160,6 +168,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
             };
 
             recyclerView.setAdapter(adapter);
+
         }
     }
 
@@ -177,8 +186,12 @@ public class RecycleView_Drivers extends AppCompatActivity {
     }
 
 
+
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_new_driver, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -189,6 +202,7 @@ public class RecycleView_Drivers extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), DriverRegistration.class));
             //finish();
         }
+
         return true;
     }
 
