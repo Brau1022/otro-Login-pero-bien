@@ -102,6 +102,7 @@ public class Login extends AppCompatActivity {
             databaseReference.child("email").child(p.getPersonId()).setValue(p);
 
             startActivity(new Intent(this, MainActivity.class));
+            //startActivity(new Intent(getApplicationContext(),MainActivity.class));
             Toast.makeText(this, "Google User Logged in", Toast.LENGTH_SHORT).show();
         }
 
